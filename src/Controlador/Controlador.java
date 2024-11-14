@@ -35,8 +35,12 @@ public class Controlador implements ActionListener {
             agregar();
             limpiar();
         }
+        if (e.getSource() == vista.btnConsultar) {
+        consultar();
+        }
         if (e.getSource() == vista.btnModificar) {
-          
+            modificar();
+            limpiar();
         }
         if (e.getSource() == vista.btnGuardar) {
           
@@ -76,8 +80,54 @@ public class Controlador implements ActionListener {
         }
         limpiarTabla();
     }
-   
+    
+    public void consultar() {
+        String codigo = vista.txtCodigoPais.getText();
+            if (codigo.isEmpty()) {
+                JOptionPane.showMessageDialog(vista, "Por favor ingrese un código de país.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Pais pais = paisOp.consultarPorCodigo(codigo);
+            if (pais != null) {
+                vista.txtNombrePais.setText(pais.getNombre());
+                vista.txtContinentePais.setText(pais.getContinente());
+                vista.txtPoblacionPais.setText(String.valueOf(pais.getPoblacion()));
+            } else {
+                JOptionPane.showMessageDialog(vista, "No se encontró un país con el código especificado.", "ERROR", JOptionPane.WARNING_MESSAGE);
+            }
+    }
+    
+    public void modificar() {
+        String codigo = vista.txtCodigoPais.getText();
+        String nombre = vista.txtNombrePais.getText();
+        String continente = vista.txtContinentePais.getText();
+        String poblacionStr = vista.txtPoblacionPais.getText();
 
+            if (codigo.isEmpty() || nombre.isEmpty() || continente.isEmpty() || poblacionStr.isEmpty()) {
+                JOptionPane.showMessageDialog(vista, "Todos los campos deben ser llenados.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int poblacion;
+            try {
+                poblacion = Integer.parseInt(poblacionStr);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(vista, "La población debe ser un número válido.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        p.setCodigo(codigo);
+        p.setNombre(nombre);
+        p.setContinente(continente);
+        p.setPoblacion(poblacion);
+        
+        int r = paisOp.modificar(p);
+        if (r == 1) {
+            JOptionPane.showMessageDialog(vista, "País modificado con éxito.");
+        } else {
+            JOptionPane.showMessageDialog(vista, "Error al modificar el país.");
+        }
+        limpiarTabla();
+    }
+   
     void centrarCeldas(JTable tabla) {
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.CENTER);

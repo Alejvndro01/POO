@@ -40,36 +40,75 @@ public class PaisOperaciones {
         return r;
     }
     
+    public Pais consultarPorCodigo(String codigo) {
+        Pais pais = null;
+        String sql = "SELECT * FROM pais WHERE codigoPais = ?";
+            try {
+                con = conectar.getConnection();
+                ps = con.prepareStatement(sql);
+                ps.setString(1, codigo);
+                rs = ps.executeQuery();
+                    if (rs.next()) {
+                        pais = new Pais();
+                        pais.setCodigo(rs.getString("codigoPais"));
+                        pais.setNombre(rs.getString("nombrePais"));
+                        pais.setContinente(rs.getString("continentePais"));
+                        pais.setPoblacion(rs.getInt("poblacionPais"));
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al consultar el país: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            return pais;
+}
+    
     public int modificar(Pais pais) {  
-        int r=0;
-        return r;
+        int r = 0;
+        String sql = "UPDATE pais SET nombrePais = ?, continentePais = ?, poblacionPais = ? WHERE codigoPais = ?";
+            try {
+                con = conectar.getConnection();
+                ps = con.prepareStatement(sql);
+                ps.setString(1, pais.getNombre());
+                ps.setString(2, pais.getContinente());
+                ps.setInt(3, pais.getPoblacion());
+                ps.setString(4, pais.getCodigo());
+                r = ps.executeUpdate();
+        
+                if (r == 1) {
+                    JOptionPane.showMessageDialog(null, "País modificado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    return 1;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró un país con el código especificado.", "Error", JOptionPane.WARNING_MESSAGE);
+                    return 0;
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Se produjo un error al intentar modificar el país.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            return r;
     }
     
     public int eliminar(String codigo){
         int r = 0; 
-    String sql = "DELETE FROM pais WHERE codigoPais = ?"; 
+        String sql = "DELETE FROM pais WHERE codigoPais = ?"; 
 
-    try (Connection con = conectar.getConnection(); 
-         PreparedStatement ps = con.prepareStatement(sql)) {
+            try (Connection con = conectar.getConnection(); 
+                PreparedStatement ps = con.prepareStatement(sql)) {
         
-        if (con != null) { 
-            ps.setString(1, codigo); 
-            r = ps.executeUpdate(); 
-    
-            if (r == 1) {
-                JOptionPane.showMessageDialog(null, "País eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                return 1; 
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró un país con el código especificado.", "Error", JOptionPane.WARNING_MESSAGE);
-                return 0; 
+                if (con != null) { 
+                    ps.setString(1, codigo); 
+                    r = ps.executeUpdate(); 
+                if (r == 1) {
+                    JOptionPane.showMessageDialog(null, "País eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        return 1; 
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró un país con el código especificado.", "Error", JOptionPane.WARNING_MESSAGE);
+                        return 0; 
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: No se pudo establecer conexión a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Se produjo un error al intentar eliminar el país: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Error: No se pudo establecer conexión a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Se produjo un error al intentar eliminar el país.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    return r;
-    }   
+            return r;
+        }  
 }
