@@ -735,7 +735,7 @@ public class Ventana extends javax.swing.JFrame{
                 JOptionPane.showMessageDialog(null, "No debes dejar campos vacíos", "ERROR", JOptionPane.ERROR_MESSAGE); 
             }
             else if (CodigoP.length() > 3 ){
-                JOptionPane.showMessageDialog(this, "El codigo debe tener solo 3 caracteres", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Marcelo wekito", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
             else{
                 PaisOP.agregar(p);
