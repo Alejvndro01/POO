@@ -81,7 +81,7 @@ public class PaisOperaciones {
                     return 0;
                 }
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Se produjo un error al intentar modificar el país.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Se Produjo un error al intentar modificar el país.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             return r;
     }
