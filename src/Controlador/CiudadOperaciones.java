@@ -111,7 +111,7 @@ public class CiudadOperaciones {
             ps.setInt(1, idCiudad);
             r = ps.executeUpdate();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar la ciudad: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al eliminar laa ciudad: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
                 if (con != null) con.close();
